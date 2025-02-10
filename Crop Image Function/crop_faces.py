@@ -19,24 +19,29 @@ def select_face(image_path):
     face_aspect_ratio = face_w / face_h
 
 
-    #corrections for face
-    if face_aspect_ratio > origin_aspect_ratio:
-        #image too wide -> increase height
-        face_h_new = int(face_w / origin_aspect_ratio) #new height
-        pad_vertical = (face_h_new - face_h)
-        pad_horizontal = 0 #no width change
-    else:
-        #image too tall -> increase width
-        face_w_new = int(face_h * origin_aspect_ratio)
-        pad_horizontal = (face_w_new - face_w)
-        pad_vertical = 0
 
-    cropped_image = origin_image[face_y - (int(pad_vertical/2)): face_y + face_h + pad_vertical, 
-                                face_x - (int(pad_horizontal/2)): face_x + face_w + pad_horizontal]
+    #corrections for face
+    # Increase size by 50%
+    scale = 1.5
+    new_w = int(face_w * scale)
+    new_h = int(face_h * scale)
+
+    # Find center of original crop
+    center_x = face_x + face_w // 2
+    center_y = face_y + face_h // 2
+
+    # Compute new top-left corner
+    new_x = max(0, center_x - new_w // 2)
+    new_y = max(0, center_y - new_h // 2)
+
+    # Ensure it does not exceed original image dimensions
+    new_x2 = min(origin_image.shape[1], new_x + new_w)
+    new_y2 = min(origin_image.shape[0], new_y + new_h)
+
+    # Perform cropping
+    cropped_image = origin_image[new_y:new_y2, new_x:new_x2]
 
     return cropped_image
-
-
 
 
 for filename in os.listdir("originalimages"):
