@@ -6,6 +6,8 @@
 .DS_Store
 **.ipynb_checkpoints/
 .Trash-0/
+.ruff_cache/
+**.pyc
 
 # To keep directory structure
 !**/.gitkeep
