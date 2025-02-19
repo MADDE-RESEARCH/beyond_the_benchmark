@@ -1,26 +1,32 @@
-from deepface import DeepFace
-import cv2
 import os
 
-def select_face(image_path):
+import cv2
+from deepface import DeepFace
 
-    #original image aspect ratio
+
+def select_face(image_path):
+    # original image aspect ratio
     origin_image = cv2.imread(image_path)
     print(image_path)
-    origin_coord = origin_image.shape
-    origin_aspect_ratio = origin_coord[1] / origin_coord[0]
+    # origin_coord = origin_image.shape
+    # origin_aspect_ratio = origin_coord[1] / origin_coord[0]
 
-    #find face
-    result = DeepFace.extract_faces(img_path=image_path, detector_backend="retinaface", enforce_detection=False)
+    # find face
+    result = DeepFace.extract_faces(
+        img_path=image_path, detector_backend="retinaface", enforce_detection=False
+    )
 
-    #face aspect ratio
+    # face aspect ratio
     face_coord = result[0]["facial_area"]
-    face_x, face_y, face_w, face_h = face_coord["x"], face_coord["y"], face_coord["w"], face_coord["h"]
-    face_aspect_ratio = face_w / face_h
+    face_x, face_y, face_w, face_h = (
+        face_coord["x"],
+        face_coord["y"],
+        face_coord["w"],
+        face_coord["h"],
+    )
+    # face_aspect_ratio = face_w / face_h
 
-
-
-    #corrections for face
+    # corrections for face
     # Increase size by 50%
     scale = 1.5
     new_w = int(face_w * scale)
@@ -45,11 +51,8 @@ def select_face(image_path):
 
 
 for filename in os.listdir("originalimages"):
-    if filename.lower().endswith(('.png', '.jpg')):  # Filter image files
+    if filename.lower().endswith((".png", ".jpg")):  # Filter image files
         img_path = os.path.join("originalimages", filename)
-    
+
     cv2.imwrite(f"croppedimages/cropped_{filename}", select_face(img_path))
     print("successful crop")
-
-
-

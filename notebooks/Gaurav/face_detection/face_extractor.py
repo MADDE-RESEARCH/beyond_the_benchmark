@@ -1,11 +1,12 @@
 # Face Detection from Video
 
-import numpy as np
-import cv2
-from imutils.video import FPS
 import os
-from tqdm import tqdm
 from typing import List
+
+import cv2
+import numpy as np
+from imutils.video import FPS
+from tqdm import tqdm
 
 RESNET_PROTOTXT = "/workspaces/face-verifiers/models/serialized/cv2-resnet/res10_300x300_ssd_iter_140000.prototxt"
 RESNET_CAFFEMODEL = "/workspaces/face-verifiers/models/serialized/cv2-resnet/res10_300x300_ssd_iter_140000.caffemodel"
