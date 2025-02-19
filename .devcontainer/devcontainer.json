@@ -6,7 +6,7 @@
 	},
 	"runArgs": [
 		"--name", "${localWorkspaceFolderBasename}",
-		// "${localEnv:DEVCONTAINER_GPU_ARG}",
+		"--gpus", "all",    /* Comment this for local*/
 		"--ipc=host",
 		"--ulimit", "memlock=-1",
 		"--ulimit", "stack=67108864",
@@ -15,8 +15,8 @@
 	],
 	"mounts": [
 		"source=${env:HOME}/.aws,target=/root/.aws,type=bind",
-		"source=${env:HOME}/.ssh,target=/root/.ssh,type=bind"
-		// "source=/mnt/data,target=/workspace/data/,type=bind"
+		"source=${env:HOME}/.ssh,target=/root/.ssh,type=bind",
+		"source=/home/ec2-user/madde/data/,target=/workspace/datasets/,type=bind" /* Comment this for local*/
 	],
 	"containerEnv": {
 		"AWS_PROFILE": "default"
