@@ -1,6 +1,17 @@
-datasets/
-experiments/
-logs/
-checkpoints/
-__pycache__/
-*.pyc
+**.txt
+**.log
+**.pkl
+.DS_Store
+**.gz
+.DS_Store
+**.ipynb_checkpoints/
+.Trash-0/
+
+# To keep directory structure
+!**/.gitkeep
+
+# Local dev container things
+.hypothesis/
+
+# Python stuff
+__pycache__
