@@ -49,3 +49,10 @@ jupyterlab==4.1.1
 ipython==8.21.0
 ipykernel==6.29.2
 tqdm==4.66.1
+
+
+#opencv-python==4.11.0.86
+#scikit-image==0.25.2
+#Ipython==8.35.0
+#kaggle==1.7.4.2
+#git+https://github.com/purewater0901/deepfake-detection.git
