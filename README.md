@@ -8,11 +8,11 @@ This repository contains the code for the MADDE Capstone project.
 
 ```bash
 git clone https://github.com/MADDE-RESEARCH/madde.git
-cd madde_project
+cd madde
 ```
 
 ### Step 2: Set up the environment
-
+Create a virtual env and install requirements;
 ```bash
 python3 -m venv madde_env
 source madde_env/bin/activate
@@ -30,9 +30,9 @@ source ~/.bashrc
 
 
 
-### 1. Classical machine learning approach (K-Nearest, SVM, Random Forest)
+### 1. Classical machine learning approach (Linear/Non-Linear SVM)
 
-Coming soon
+Coming soon!
 
 ### 2.Deep Learning based approach
 
@@ -45,5 +45,5 @@ See `config` folder for the model that you want to use.
 Example:
 
 ```bash
-python src/main.py --config config/deepfake_full_tune.yaml
+python src/main.py --config=config/deepfake_full_tune.yaml
 ```
