@@ -14,12 +14,17 @@ cd madde_project
 ### Step 2: Set up the environment
 
 ```bash
-python3 -m venv madde
-source madde/bin/activate
+python3 -m venv madde_env
+source madde_env/bin/activate
 pip install -r requirements.txt
 ```
 
-
+### Step 3: Configure bash
+Turning off tensorflow's warning;
+```bash
+echo 'export TF_CPP_MIN_LOG_LEVEL=2' >> ~/.bashrc
+source ~/.bashrc
+```
 
 ## 2. Running the Code
 
