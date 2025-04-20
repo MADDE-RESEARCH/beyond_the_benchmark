@@ -11,6 +11,7 @@ from deep_learning.linear_tail_fine_tuner import LinearTailFT
 from deep_learning.lora_fine_tuner import LoraFT
 from deep_learning.bayes_tuner import BayesTune
 from deep_learning.ln_fine_tuner import LNFT
+from deep_learning.adapter_tuner import Adapter_FT
 from utils.config_parser import parse_cfg
 
 from deepfake_detection.model.dfdet import DeepfakeDetectionModel
@@ -23,6 +24,7 @@ TUNER_CLASSES = {
     "LoraFT": LoraFT,
     "BayesFT": BayesTune,
     "LNFT": LNFT,
+    "Adapter_FT": Adapter_FT,
 }
 
 if __name__ == "__main__":
@@ -60,7 +62,7 @@ if __name__ == "__main__":
         preprocess = model.get_preprocessing()
 
     # create config
-    cfg.data_dir = os.path.join(os.getcwd(), "data")  # Ensure the data directory is correct
+    cfg.data_dir = os.path.join(os.getcwd(), "datasets")  # Ensure the data directory is correct
     cfg.model = model if model is not None else None
     cfg.processor = preprocess if preprocess is not None else None
 
@@ -76,4 +78,5 @@ if __name__ == "__main__":
         raise ValueError(f"Unsupported Tuning Type: {cfg.tuning_type}")
     tuner = tuner_cls(**vars(cfg))
 
+    tuned_model = tuner.set_TestFolder(['Real_1k_split'],['firefly_split'])
     tuned_model = tuner.Experiment()

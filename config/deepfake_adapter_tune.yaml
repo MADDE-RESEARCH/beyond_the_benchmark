@@ -1,4 +1,4 @@
-"tuning_type": "LinearTailFT"
+"tuning_type": "Adapter_FT"
 "model_name": "deepfake_detection"
 "real_folder": ['Real_4k_split', 'Real_1k_split']
 "fake_folder": ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split']
@@ -6,3 +6,8 @@
 "batch_size": 16
 "learning_rate": 0.0005
 "use_wandb": True
+
+# Adapter Parameters
+"hidden_dim": 1024
+"bottleneck": 2048
+"dropout": 0.1

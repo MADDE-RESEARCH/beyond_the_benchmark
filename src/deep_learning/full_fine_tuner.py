@@ -54,6 +54,8 @@ class FullFT(FineTuner):
 
         if model_save_path is None:
             model_save_path = f"full_tune_{self.model_name}.pth"
+        # Update model save path to absolute path
+        model_save_path = os.path.join("/home/ec2-user/madde/experiments/models/", model_save_path)
 
         # Optimizer
         if optimizer is None:
@@ -167,7 +169,8 @@ class FullFT(FineTuner):
 
             # Also save a checkpoint every 5 epoch
             if epoch + 1 % 5 == 0:
-                checkpoint_path = f"checkpoint_epoch_{epoch+1}.pth"
+                # Update the checkpoint path 
+                checkpoint_path = f"/home/ec2-user/madde/experiments/checkpoints/checkpoint_epoch_{epoch+1}.pth"
                 torch.save(
                     {
                         "epoch": epoch,

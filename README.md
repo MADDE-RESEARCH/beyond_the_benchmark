@@ -26,7 +26,13 @@ echo 'export TF_CPP_MIN_LOG_LEVEL=2' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## 2. Running the Code
+### Step 4: Login Wandb
+Don't forget to log in to Wandb before running experiments;
+```bash
+wandb login <YOUR_API_KEY>
+```
+
+## 2. Running the One-shot fine-tuning
 
 
 
@@ -35,15 +41,25 @@ source ~/.bashrc
 Coming soon!
 
 ### 2.Deep Learning based approach
+First, config your yaml file. Check real folders, fake folders, epochs and learning rate.
+Then add '--config' to specify model you want to use!
 
 ```bash
 python src/main.py --config=config/<filename>
 ```
 
-See `config` folder for the model that you want to use.
-
 Example:
 
 ```bash
 python src/main.py --config=config/deepfake_full_tune.yaml
+```
+
+## 3. Batch Experiment
+
+For batch-experiment, plesae run 'experiment.py'.
+You need to pick a fine-tuning method by yaml file. and 
+This time the real/fake folder in a yaml file will be ignored, and it will automatically be trained and tested on full dataset and all five leave-one-out combinations of our deepfake dataset.
+
+```bash
+python src/experiment.py --config=config/deepfake_full_tune.yaml
 ```
