@@ -3,6 +3,6 @@
 "real_folder": ['Real_1k_split']
 "fake_folder": ['Dall-E_split'] #['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split']
 "num_epochs": 1 # doesn't matter
-"batch_size": 32
+"batch_size": 10
 "learning_rate": None
-"use_wandb": True
+"use_wandb": False
