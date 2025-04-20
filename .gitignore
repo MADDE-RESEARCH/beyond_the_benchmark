@@ -17,3 +17,13 @@
 
 # Python stuff
 __pycache__
+
+**/data/**
+**/__pycache__/**
+.vscode/
+**/weights/**
+wandb
+*.pth
+*.pt
+madde_env
+**/datasets/**
