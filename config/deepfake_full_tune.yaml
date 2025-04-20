@@ -3,6 +3,6 @@
 "real_folder": ['Real_4k_split', 'Real_1k_split']
 "fake_folder": ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split']
 "num_epochs": 15
-"batch_size": 16
+"batch_size": 32
 "learning_rate": 0.0005
 "use_wandb": True

@@ -55,7 +55,7 @@ class FullFT(FineTuner):
         if model_save_path is None:
             model_save_path = f"full_tune_{self.model_name}.pth"
         # Update model save path to absolute path
-        model_save_path = os.path.join("/home/ec2-user/madde/experiments/models/", model_save_path)
+        model_save_path = os.path.join("experiments/models/", model_save_path)
 
         # Optimizer
         if optimizer is None:
@@ -80,17 +80,15 @@ class FullFT(FineTuner):
         best_val_acc = 0.0
 
         # Create a tqdm progress bar for epochs
-        epoch_loop = tqdm(
-            range(self.num_epochs), desc="Training Progress", unit="epoch"
-        )
-        for epoch in epoch_loop:
+        #epoch_loop = tqdm(range(self.num_epochs), desc="Training Progress", unit="epoch")
+        for epoch in range(self.num_epochs): #epoch_loop:
             # Training phase
             self.model.train()
             running_loss = 0.0
             correct = 0
             total = 0
 
-            for inputs, labels, pathes in train_loader:
+            for inputs, labels, pathes in tqdm(train_loader, desc=f"Epoch {epoch+1}/{self.num_epochs}"): #train_loader:
                 inputs, labels = inputs.to(self.device), labels.to(self.device)
 
                 # Zero the parameter gradients
@@ -170,7 +168,7 @@ class FullFT(FineTuner):
             # Also save a checkpoint every 5 epoch
             if epoch + 1 % 5 == 0:
                 # Update the checkpoint path 
-                checkpoint_path = f"/home/ec2-user/madde/experiments/checkpoints/checkpoint_epoch_{epoch+1}.pth"
+                checkpoint_path = f"experiments/checkpoints/checkpoint_epoch_{epoch+1}.pth"
                 torch.save(
                     {
                         "epoch": epoch,

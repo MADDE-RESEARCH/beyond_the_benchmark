@@ -58,7 +58,7 @@ class BayesTune(FullFT):
         for name, param in self.model.named_parameters():
             self.initial_params[name] = param.clone().detach()
 
-        torch.save(self.model.state_dict(), "bayes_tune_initial_model.pt")
+        torch.save(self.model.state_dict(), "experiments/models/bayes_tune_initial_model.pt")
 
 
     def get_posterior_stats(
@@ -208,7 +208,7 @@ class BayesTune(FullFT):
             plt.title(" Importance per Parameter Group")
             plt.xlabel("Parameter Group Index")
             plt.ylabel("Lambda (Importance)")
-            plt.savefig(f"/home/ec2-user/CS282_final_project/src/pics/lambda_mean.png")
+            plt.savefig(f"src/pics/lambda_mean.png")
 
         # Clear CUDA cache
         if hasattr(torch.cuda, 'empty_cache'):
@@ -220,14 +220,14 @@ class BayesTune(FullFT):
         torch.save({
             'running_mean': lambda_stats['running_mean'],
             'group_names': self.group_names
-        }, "bayes_tune_lambda_stats.pt")
+        }, "experiments/results/bayes_tune_lambda_stats.pt")
 
         return lambda_stats
         
 
     def Tune(self):
         # Get posterior stats
-        stats_file = "bayes_tune_lambda_stats.pt"
+        stats_file = "experiments/results/bayes_tune_lambda_stats.pt"
         if os.path.exists(stats_file):
             print(f"Loading lambda stats from {stats_file}")
             lambda_stats = torch.load(stats_file, map_location=self.device)
@@ -237,7 +237,7 @@ class BayesTune(FullFT):
             lambda_mean = lambda_stats['running_mean'].detach().cpu().numpy()
 
         # Reload the initial model for the second stage fine-tuning
-        self.model.load_state_dict(torch.load("bayes_tune_initial_model.pt", map_location=self.device))
+        self.model.load_state_dict(torch.load("experiments/models/bayes_tune_initial_model.pt", map_location=self.device))
         
         sorted_values, sorted_indices = torch.tensor(lambda_mean).sort(descending=True)
         total_selected = 0
@@ -254,7 +254,6 @@ class BayesTune(FullFT):
                 params = self.model.get_parameter(self.group_names[idx])
                 params.requires_grad = True
                 total_selected += params.numel()
-                #print(f"Group name: {self.group_names[idx]} ({params.numel()} params), Total: {total_selected}/{self.count_total_params} ({total_selected/self.count_total_params*100:.4f}%)")
             else:
                 break
 

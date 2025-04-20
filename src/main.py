@@ -24,7 +24,7 @@ TUNER_CLASSES = {
     "LoraFT": LoraFT,
     "BayesFT": BayesTune,
     "LNFT": LNFT,
-    "Adapter_FT": Adapter_FT,
+    "AdapterFT": Adapter_FT,
 }
 
 if __name__ == "__main__":
