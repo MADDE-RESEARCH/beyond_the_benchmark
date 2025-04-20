@@ -26,14 +26,20 @@ echo 'export TF_CPP_MIN_LOG_LEVEL=2' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### Step 4: Login Wandb
+### Step 4: Fetch dataset
+```bash
+cd datasets
+kaggle datasets download katsuyamucb/madde-dataset
+unzip madde-dataset.zip
+```
+
+### Step 5: Login Wandb
 Don't forget to log in to Wandb before running experiments;
 ```bash
 wandb login <YOUR_API_KEY>
 ```
 
 ## 2. Running the One-shot fine-tuning
-
 
 
 ### 1. Classical machine learning approach (Linear/Non-Linear SVM)
