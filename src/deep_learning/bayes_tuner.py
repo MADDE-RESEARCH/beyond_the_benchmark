@@ -208,7 +208,7 @@ class BayesTune(FullFT):
             plt.title(" Importance per Parameter Group")
             plt.xlabel("Parameter Group Index")
             plt.ylabel("Lambda (Importance)")
-            plt.savefig(f"src/pics/lambda_mean.png")
+            plt.savefig(f"experiments/results/lambda_mean.png")
 
         # Clear CUDA cache
         if hasattr(torch.cuda, 'empty_cache'):
