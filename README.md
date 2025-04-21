@@ -31,7 +31,7 @@ source ~/.bashrc
 echo 'export PATH=/opt/pytorch/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
-```bash
+```python
 import kagglehub
 
 # Download latest version
