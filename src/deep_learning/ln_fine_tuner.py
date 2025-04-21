@@ -40,8 +40,14 @@ class LNFT(FullFT):
     def Tune(self):
         self.freeze_all_layers()
 
+        # Unfreeze the linear classifier layer
+        for param in self.model.model.parameters():
+            param.requires_grad = True
+        
+        # Add layernorm tuning
         self.model = get_peft_model(self.model, self.ln_config)
         print("Layer Norm model loaded")
+        
 
         optimizer = optim.AdamW(filter(lambda p: p.requires_grad, self.model.parameters()), lr=self.learning_rate)
         model_save_path = f"ln_tune_{self.model_name}.pth"
