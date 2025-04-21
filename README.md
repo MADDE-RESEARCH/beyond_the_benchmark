@@ -33,6 +33,7 @@ source ~/.bashrc
 ```
 ```python
 import kagglehub
+import os
 
 # Set target download directory
 os.environ["KAGGLEHUB_CACHE_DIR"] = os.path.expanduser("~/madde/datasets")
