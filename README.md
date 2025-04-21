@@ -32,9 +32,12 @@ echo 'export PATH=/opt/pytorch/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
 ```bash
-cd datasets
-kaggle datasets download katsuyamucb/madde-dataset
-unzip madde-dataset.zip
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("katsuyamucb/madde-dataset")
+
+print("Path to dataset files:", path)
 ```
 
 ### Step 5: Login Wandb
