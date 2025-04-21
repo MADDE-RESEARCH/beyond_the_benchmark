@@ -34,6 +34,8 @@ source ~/.bashrc
 ```python
 import kagglehub
 
+# Set target download directory
+os.environ["KAGGLEHUB_CACHE_DIR"] = os.path.expanduser("~/madde/datasets")
 # Download latest version
 path = kagglehub.dataset_download("katsuyamucb/madde-dataset")
 
