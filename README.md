@@ -28,6 +28,10 @@ source ~/.bashrc
 
 ### Step 4: Fetch dataset
 ```bash
+echo 'export PATH=/opt/pytorch/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+```bash
 cd datasets
 kaggle datasets download katsuyamucb/madde-dataset
 unzip madde-dataset.zip
