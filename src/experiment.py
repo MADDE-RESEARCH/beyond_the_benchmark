@@ -24,6 +24,7 @@ TUNER_CLASSES = {
     "BayesFT": BayesTune,
     "LNFT": LNFT,
     'AdapterFT': Adapter_FT,
+    "LinearTailFT": LinearTailFT,
 }
 
 if __name__ == "__main__":
