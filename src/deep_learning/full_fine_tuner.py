@@ -222,6 +222,7 @@ class FullFT(FineTuner):
                 val_loss,
                 val_acc,
                 optimizer,
+                best_val_acc
             )
 
         # Final summary at the end of training

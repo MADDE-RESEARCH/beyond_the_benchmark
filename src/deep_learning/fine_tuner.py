@@ -285,33 +285,15 @@ class FineTuner:
         report_df = pd.DataFrame(report)
         #display(report_df)
 
-        cm = confusion_matrix(all_labels, all_preds)
-        plt.subplot(2, 2, 4)
-        plt.imshow(cm, interpolation="nearest", cmap=plt.cm.Blues)
-        plt.title("Confusion Matrix")
-        plt.colorbar()
-        tick_marks = np.arange(2)
-        plt.xticks(tick_marks, ["Real", "Fake"], rotation=45)
-        plt.yticks(tick_marks, ["Real", "Fake"])
 
-        # Add text annotations to confusion matrix
-        thresh = cm.max() / 2.0
-        for i in range(cm.shape[0]):
-            for j in range(cm.shape[1]):
-                plt.text(
-                    j,
-                    i,
-                    format(cm[i, j], "d"),
-                    horizontalalignment="center",
-                    color="white" if cm[i, j] > thresh else "black",
-                )
-
-        plt.tight_layout()
-        plt.show()
+        tn, fp, fn, tp = confusion_matrix(all_labels, all_preds).ravel()
+        tpr = tp / (tp + fn)  # Sensitivity/Recall/True Positive Rate
+        tnr = tn / (tn + fp)  # Specificity/True Negative Rate
+        fpr = fp / (tn + fp)  # False Positive Rate
+        fnr = fn / (tp + fn)  # False Negative Rate
 
         # Logging
         all_probs = np.array(all_probs)
-        fpr, tpr, _ = roc_curve(all_labels, all_probs[:, 1])
 
         if OOT_test:
             wandb.log(
@@ -333,6 +315,10 @@ class FineTuner:
                         labels=["Real", "Fake"],
                         title = "OOT Test ROC Curve"
                     ),
+                    'OOT_tpr': tpr,  # Sensitivity/Recall/True Positive Rate
+                    'OOT_tnr': tnr,  # Specificity/True Negative Rate
+                    'OOT_fpr': fpr,  # False Positive Rate
+                    'OOT_fnr': fnr,  # False Negative Rate
                 }
             )
         else:
@@ -355,6 +341,10 @@ class FineTuner:
                         labels=["Real", "Fake"],
                         title = "Test ROC Curve"
                     ),
+                    'tpr': tpr,  # Sensitivity/Recall/True Positive Rate
+                    'tnr': tnr,  # Specificity/True Negative Rate
+                    'fpr': fpr,  # False Positive Rate
+                    'fnr': fnr,  # False Negative Rate
                 }
             )
 
@@ -371,6 +361,7 @@ class FineTuner:
         val_loss,
         val_acc,
         optimizer,
+        best_val_acc = None,
     ):
         wandb.log(
             {
@@ -395,7 +386,9 @@ class FineTuner:
                         preds=all_preds,
                         class_names=["Real", "Fake"],
                         title="Training Confusion Matrix",
-                    )
+                    ),
+                    "best_val_accuracy": best_val_acc,
+                    
                 }
             )
 
