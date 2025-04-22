@@ -45,19 +45,64 @@ if __name__ == "__main__":
 
 
     experiment_combinations = [
-        # Full set
-        {'real': ['Real_4k_split', 'Real_1k_split'], 'fake': ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split']}, 
-        # Leave Dall-E out
-        {'real': ['Real_4k_split'], 'fake': ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split'], 'real_test': ['Real_1k_split'], 'fake_test': ['Dall-E_split']},
-        # Leave firefly out
-        {'real': ['Real_4k_split'], 'fake': ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'Dall-E_split'], 'real_test': ['Real_1k_split'], 'fake_test': ['firefly_split']},
-        # Leave Midjourney out
-        {'real': ['Real_4k_split'], 'fake': ['StableDiffusion_split', 'StyleGAN2_split', 'firefly_split', 'Dall-E_split'], 'real_test': ['Real_1k_split'], 'fake_test': ['Midjourney_split']},
-        # Leave StyleGAN2 out
-        {'real': ['Real_4k_split'], 'fake': ['StableDiffusion_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split'], 'real_test': ['Real_1k_split'], 'fake_test': ['StyleGAN2_split']},
-        # Leave StableDiffusion out
-        {'real': ['Real_4k_split'], 'fake': ['StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split'], 'real_test': ['Real_1k_split'], 'fake_test': ['StableDiffusion_split']},
-    ]
+    # Full set
+    {
+        "dataset_type": "Full_set",
+        "real": ["Real_4k_split", "Real_1k_split"],
+        "fake": ["StableDiffusion_split", "StyleGAN2_split",
+                 "Midjourney_split", "firefly_split", "Dall-E_split"],
+    },
+
+    # Leave Dall‑E out
+    {
+        "dataset_type": "Dall‑E_out",
+        "real": ["Real_4k_split"],
+        "fake": ["StableDiffusion_split", "StyleGAN2_split",
+                 "Midjourney_split", "firefly_split"],
+        "real_test": ["Real_1k_split"],
+        "fake_test": ["Dall-E_split"],
+    },
+
+    # Leave firefly out
+    {
+        "dataset_type": "Firefly_out",
+        "real": ["Real_4k_split"],
+        "fake": ["StableDiffusion_split", "StyleGAN2_split",
+                 "Midjourney_split", "Dall-E_split"],
+        "real_test": ["Real_1k_split"],
+        "fake_test": ["firefly_split"],
+    },
+
+    # Leave Midjourney out
+    {
+        "dataset_type": "Midjourney_out",
+        "real": ["Real_4k_split"],
+        "fake": ["StableDiffusion_split", "StyleGAN2_split",
+                 "firefly_split", "Dall-E_split"],
+        "real_test": ["Real_1k_split"],
+        "fake_test": ["Midjourney_split"],
+    },
+
+    # Leave StyleGAN2 out
+    {
+        "dataset_type": "StyleGAN2_out",
+        "real": ["Real_4k_split"],
+        "fake": ["StableDiffusion_split", "Midjourney_split",
+                 "firefly_split", "Dall-E_split"],
+        "real_test": ["Real_1k_split"],
+        "fake_test": ["StyleGAN2_split"],
+    },
+
+    # Leave StableDiffusion out
+    {
+        "dataset_type": "StableDiffusion_out",
+        "real": ["Real_4k_split"],
+        "fake": ["StyleGAN2_split", "Midjourney_split",
+                 "firefly_split", "Dall-E_split"],
+        "real_test": ["Real_1k_split"],
+        "fake_test": ["StableDiffusion_split"],
+    },
+]
 
 
     for combination in experiment_combinations:
@@ -91,7 +136,7 @@ if __name__ == "__main__":
         project_name = "Fine-Tuning Experiment"
         mode = "online" if cfg.use_wandb else "disabled"
         group_name = cfg.tuning_type
-        run_name = f"{cfg.model_name}_{cfg.tuning_type}"
+        run_name = f"{cfg.model_name}_{cfg.tuning_type}_{combination['dataset_type']}"
         wandb.init(project=project_name, group=group_name, name=run_name, config=cfg, mode=mode)
 
         tuner_cls = TUNER_CLASSES.get(cfg.tuning_type)
