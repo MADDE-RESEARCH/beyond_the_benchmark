@@ -12,6 +12,7 @@ from deep_learning.lora_fine_tuner import LoraFT
 from deep_learning.bayes_tuner import BayesTune
 from deep_learning.ln_fine_tuner import LNFT
 from deep_learning.adapter_tuner import Adapter_FT
+from deep_learning.vera_fine_tuner import VeraFT
 from utils.config_parser import parse_cfg
 
 from deepfake_detection.model.dfdet import DeepfakeDetectionModel
@@ -25,6 +26,7 @@ TUNER_CLASSES = {
     "BayesFT": BayesTune,
     "LNFT": LNFT,
     "AdapterFT": Adapter_FT,
+    "VeraFT": VeraFT,
 }
 
 if __name__ == "__main__":
@@ -70,7 +72,7 @@ if __name__ == "__main__":
     project_name = "Fine-Tuning Experiment"
     mode = "online" if cfg.use_wandb else "disabled"
     group_name = cfg.tuning_type
-    run_name = cfg.model_name
+    run_name = f"Adhoc_{cfg.model_name}_{cfg.tuning_type}"
     wandb.init(project=project_name, group=group_name, name=run_name, config=cfg, mode=mode)
 
     tuner_cls = TUNER_CLASSES.get(cfg.tuning_type)
