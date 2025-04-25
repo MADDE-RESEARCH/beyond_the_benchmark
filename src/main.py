@@ -18,6 +18,8 @@ from utils.config_parser import parse_cfg
 from deepfake_detection.model.dfdet import DeepfakeDetectionModel
 from deepfake_detection.config import Config
 
+os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'
+
 TUNER_CLASSES = {
     "FrozenFT": FrozenFT,
     "FullFT": FullFT,
@@ -38,11 +40,14 @@ if __name__ == "__main__":
     cfg = parse_cfg(cfg, cfg.config)
     cfg.device = cfg.device if torch.cuda.is_available() else "cpu"
 
-    # set seed
+    # set seed for reproducibility
     np.random.seed(cfg.seed)
     torch.manual_seed(cfg.seed)
     torch.cuda.manual_seed_all(cfg.seed)
-    torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.deterministic = True # Added this
+    torch.backends.cudnn.benchmark = False  # Change this to False
+    torch.use_deterministic_algorithms(True, warn_only=False)  # Added this
+    
     torch.set_float32_matmul_precision("high")
 
     # sets model if necessary
@@ -80,5 +85,5 @@ if __name__ == "__main__":
         raise ValueError(f"Unsupported Tuning Type: {cfg.tuning_type}")
     tuner = tuner_cls(**vars(cfg))
 
-    # tuned_model = tuner.set_TestFolder(['Real_1k_split'],['firefly_split'])
+    #tuned_model = tuner.set_TestFolder(['Real_1k_split'],['StyleGAN2_split'])
     tuned_model = tuner.Experiment()

@@ -20,17 +20,16 @@ pip install -r requirements.txt
 ```
 
 ### Step 3: Configure bash
-Turning off tensorflow's warning;
+
 ```bash
-echo 'export TF_CPP_MIN_LOG_LEVEL=2' >> ~/.bashrc
+echo 'export TF_CPP_MIN_LOG_LEVEL=2' >> ~/.bashrc # To turn off tensorflow's warning
+echo 'export PATH=/opt/pytorch/bin:$PATH' >> ~/.bashrc # To download Kaggle dataset
+echo 'export CUBLAS_WORKSPACE_CONFIG=:4096:8' >> ~/.bashrc # To make algorithm deterministic
 source ~/.bashrc
 ```
 
 ### Step 4: Fetch dataset
-```bash
-echo 'export PATH=/opt/pytorch/bin:$PATH' >> ~/.bashrc
-source ~/.bashrc
-```
+
 ```python
 import kagglehub
 import os
