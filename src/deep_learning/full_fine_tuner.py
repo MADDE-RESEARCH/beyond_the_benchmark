@@ -2,8 +2,10 @@ import os
 from tqdm.auto import tqdm
 import torch
 from torch import nn, optim
-
+import time
 from deep_learning.fine_tuner import FineTuner
+import wandb
+from utils.logger import *
 
 
 class FullFT(FineTuner):
@@ -78,6 +80,7 @@ class FullFT(FineTuner):
         train_accuracies = []
         val_accuracies = []
         best_val_acc = 0.0
+        global_step = 0
 
         # Create a tqdm progress bar for epochs
         #epoch_loop = tqdm(range(self.num_epochs), desc="Training Progress", unit="epoch")
@@ -88,7 +91,19 @@ class FullFT(FineTuner):
             correct = 0
             total = 0
 
+            # GPU stats- epoch
+            grad_norm_sum = 0.0
+            gpu_mem_allocated_sum = 0.0
+            gpu_mem_reserved_sum = 0.0
+            gpu_util_sum = 0.0
+            tflops_sum = 0.0
+            batch_time_sum = 0.0
+            batch_count = 0
+
             for inputs, labels, pathes in tqdm(train_loader, desc=f"Epoch {epoch+1}/{self.num_epochs}"): #train_loader:
+                # batch start time
+                batch_start_time = time.time()
+
                 inputs, labels = inputs.to(self.device), labels.to(self.device)
 
                 # Zero the parameter gradients
@@ -103,13 +118,50 @@ class FullFT(FineTuner):
 
                 # Backward pass and optimize
                 loss.backward()
+                grad_norm = compute_gradient_norm(self.model)
                 optimizer.step()
 
+                # Time per batch
+                batch_time = time.time() - batch_start_time
+
+                # GPU utilization
+                gpu_mem_allocated = torch.cuda.memory_allocated(self.device) / (1024 ** 2)
+                gpu_mem_reserved = torch.cuda.memory_reserved(self.device) / (1024 ** 2)
+                gpu_util = get_gpu_utilization() or 0.0
+
+                # TFLOPs
+                tflops, tflops_util, trainable_params = estimate_tflops_utilization(self.model, self.batch_size, batch_time)
+
+                # Log to WandB
+                wandb.log({
+                    "batch/gradient_norm": grad_norm,
+                    "gpu/memory_allocated_MB": gpu_mem_allocated,
+                    "gpu/memory_reserved_MB": gpu_mem_reserved,
+                    "gpu/utilization_percent": gpu_util,
+                    "performance/tflops_estimate": tflops,
+                    "performance/tflops_utilization": tflops_util,
+                    "performance/trainable_params": trainable_params,
+                    "performance/batch_time_sec": batch_time},
+                    step=global_step
+                )
+                global_step += 1
+                
                 # Statistics
                 running_loss += loss.item() * inputs.size(0)
                 _, predicted = torch.max(outputs, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
+
+                # GPU Statistics
+                # Accumulate
+                grad_norm_sum += grad_norm
+                gpu_mem_allocated_sum += gpu_mem_allocated
+                gpu_mem_reserved_sum += gpu_mem_reserved
+                gpu_util_sum += gpu_util
+                tflops_sum += tflops
+                batch_time_sum += batch_time
+                batch_count += 1
+
 
             # Calculate epoch metrics
             train_loss = running_loss / len(train_loader.dataset)
@@ -223,6 +275,18 @@ class FullFT(FineTuner):
                 val_acc,
                 optimizer,
                 best_val_acc
+            )
+
+            # Log GPU metrics
+            wandb.log({
+                "epoch/grad_norm_avg": grad_norm_sum / batch_count,
+                "epoch/gpu_memory_allocated_MB_avg": gpu_mem_allocated_sum / batch_count,
+                "epoch/gpu_memory_reserved_MB_avg": gpu_mem_reserved_sum / batch_count,
+                "epoch/gpu_utilization_percent_avg": gpu_util_sum / batch_count,
+                "epoch/tflops_estimate_avg": tflops_sum / batch_count,
+                "epoch/batch_time_sec_avg": batch_time_sum / batch_count,
+                "epoch/num_batches": batch_count},
+                step=epoch
             )
 
         # Final summary at the end of training

@@ -66,6 +66,7 @@ python src/main.py --config=config/<filename>
 Example:
 
 ```bash
+source madde_env/bin/activate
 python src/main.py --config=config/deepfake_full_tune.yaml
 ```
 
@@ -76,5 +77,12 @@ You need to pick a fine-tuning method by yaml file. and
 This time the real/fake folder in a yaml file will be ignored, and it will automatically be trained and tested on full dataset and all five leave-one-out combinations of our deepfake dataset.
 
 ```bash
+tmux new -s experiment_fft
+source madde_env/bin/activate
+export CUBLAS_WORKSPACE_CONFIG=:4096:8 # For Vera Finetuning
 python src/experiment.py --config=config/deepfake_full_tune.yaml
+```
+```bash
+Ctrl + b then d # For detaching the session
+tmux a -t experiment_fft # For reopening the session
 ```
