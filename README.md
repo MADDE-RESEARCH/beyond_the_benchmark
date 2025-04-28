@@ -79,7 +79,6 @@ This time the real/fake folder in a yaml file will be ignored, and it will autom
 ```bash
 tmux new -s experiment_fft
 source madde_env/bin/activate
-export CUBLAS_WORKSPACE_CONFIG=:4096:8 # For Vera Finetuning
 python src/experiment.py --config=config/deepfake_full_tune.yaml
 ```
 ```bash
