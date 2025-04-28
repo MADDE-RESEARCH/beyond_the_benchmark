@@ -286,7 +286,6 @@ class FullFT(FineTuner):
                 "epoch/tflops_estimate_avg": tflops_sum / batch_count,
                 "epoch/batch_time_sec_avg": batch_time_sum / batch_count,
                 "epoch/num_batches": batch_count},
-                step=epoch
             )
 
         # Final summary at the end of training
