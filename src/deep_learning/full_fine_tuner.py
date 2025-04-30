@@ -80,7 +80,6 @@ class FullFT(FineTuner):
         train_accuracies = []
         val_accuracies = []
         best_val_acc = 0.0
-        global_step = 0
 
         # Create a tqdm progress bar for epochs
         #epoch_loop = tqdm(range(self.num_epochs), desc="Training Progress", unit="epoch")
@@ -142,9 +141,7 @@ class FullFT(FineTuner):
                     "performance/tflops_utilization": tflops_util,
                     "performance/trainable_params": trainable_params,
                     "performance/batch_time_sec": batch_time},
-                    step=global_step
                 )
-                global_step += 1
                 
                 # Statistics
                 running_loss += loss.item() * inputs.size(0)
