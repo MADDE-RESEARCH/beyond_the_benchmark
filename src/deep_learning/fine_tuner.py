@@ -426,7 +426,7 @@ class FineTuner:
                 }
             )
 
-    def Experiment(self, test_split=["Test"]):
+    def Experiment(self, dataset_type, test_split=["Test"]):
         # Fine-tune the model
         tuned_model = self.Tune()
 
@@ -447,7 +447,7 @@ class FineTuner:
         })
 
         # Log the model artifact
-        model_artifact = wandb.Artifact(name=f"{self.method_name}-{self.model_name}", type="model")
+        model_artifact = wandb.Artifact(name=f"{dataset_type}-{self.model_name}", type="model")
         wandb.log_artifact(model_artifact)
 
         # Combine all reports in a single CSV
@@ -457,7 +457,7 @@ class FineTuner:
             keys=eval_results.keys(),
             names=["Domain", "Metric"]
         )
-        combined_csv_path = f"/home/ec2-user/madde/experiments/results/_{self.method_name}_{self.model_name}_combined_report.csv"
+        combined_csv_path = f"/home/ec2-user/madde/experiments/results/_{dataset_type}_{self.model_name}_combined_report.csv"
         combined_report.to_csv(combined_csv_path)
         print(f"Saved combined evaluation report to {combined_csv_path}")
 

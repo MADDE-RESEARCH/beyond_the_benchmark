@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     # Dall‑E
     {
-        "dataset_type": "Dall‑E",
+        "dataset_type": "Dall‑E+SG2",
         "real": ["Real_2_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split"],
         "real_test": ["Real_5_k_split"],
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     # Firefly
     {
-        "dataset_type": "Firefly",
+        "dataset_type": "Firefly+DE+SG2",
         "real": ["Real_3_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split", "firefly_split"],
         "real_test": ["Real_5_k_split"],
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # Midjourney
     {
-        "dataset_type": "Midjourney",
+        "dataset_type": "Midjourney+FF+DE+SG2",
         "real": ["Real_4_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split", "firefly_split", "Midjourney_split"],
         "real_test": ["Real_5_k_split"],
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     # StableDiffusion
     {
-        "dataset_type": "StableDiffusion",
+        "dataset_type": "StableDiffusion+MJ+FF+DE+SG2",
         "real": ["Real_5_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split", "firefly_split", "Midjourney_split", "StableDiffusion_split"],
         "real_test": ["Real_5_k_split"],
@@ -109,7 +109,6 @@ if __name__ == "__main__":
                       "Midjourney_split", "firefly_split", "Dall-E_split"],
     },
 ]
-
 
     for combination in experiment_combinations:
         # sets model if necessary
@@ -153,7 +152,7 @@ if __name__ == "__main__":
         tuner.set_TestFolder(combination['real_test'], combination['fake_test'])
 
         # let's go!
-        tuned_model = tuner.Experiment()
+        tuned_model = tuner.Experiment(combination['dataset_type'], cfg.test_split)
 
 # Example _______________________________________________________________________________________________________________
 # python src/experiment.py --config=config/deepfake_full_tune.yaml --test_split Test
