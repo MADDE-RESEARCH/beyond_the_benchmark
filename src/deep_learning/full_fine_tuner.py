@@ -142,7 +142,6 @@ class FullFT(FineTuner):
                     "performance/tflops_utilization": tflops_util,
                     "performance/trainable_params": trainable_params,
                     "performance/batch_time_sec": batch_time},
-                    step=global_step
                 )
                 global_step += 1
                 

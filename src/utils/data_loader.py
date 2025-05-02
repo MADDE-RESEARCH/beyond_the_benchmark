@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import torch
 from torch.utils.data import Dataset
+import random
 from typing import Union, List
 
 # Custom dataset for deepfake detection
@@ -41,8 +42,18 @@ class DeepfakeDataset(Dataset):
         self.load_samples()
 
 
-    def load_samples(self):
-        """Load all image paths and their corresponding labels"""
+    def load_samples(self, per_class=None, seed: int = 42):
+        """Load all image paths and their corresponding labels
+        
+        Parameters
+        ----------
+        per_class : int | None
+            • If None  → take k = min(#Real, #Fake) images from each class  
+            • If int   → take exactly that many from each class
+        seed : int
+            RNG seed so that the same subset is chosen each run.
+        """
+
         for class_idx, folder_list in self.class_folders.items():
             for folder_name in folder_list:
                 class_dir = os.path.join(self.root_dir, folder_name)
@@ -68,6 +79,30 @@ class DeepfakeDataset(Dataset):
                     self.samples.append((img_path, class_idx))
         """
 
+        # Make balanced and shuffled dataset _____________________________________
+        rng = random.Random(seed)
+
+        # Separate existing samples into two buckets
+        real_samples = [s for s in self.samples if s[1] == 0]
+        fake_samples = [s for s in self.samples if s[1] == 1]
+
+        if per_class is None:
+            k = min(len(real_samples), len(fake_samples))
+        else:
+            k = min(per_class, len(real_samples), len(fake_samples))
+
+        if k == 0:
+            raise ValueError("Cannot create a balanced set: one class is empty.")
+
+        # Deterministic random choice
+        balanced_real = rng.sample(real_samples, k)
+        balanced_fake = rng.sample(fake_samples, k)
+        balanced = balanced_real + balanced_fake
+        rng.shuffle(balanced)
+
+        self.samples = balanced
+
+    
     def __len__(self):
         return len(self.samples)
 
@@ -92,19 +127,20 @@ class DeepfakeDataset(Dataset):
             placeholder = torch.zeros((3, 299, 299))
             return placeholder, label, img_path
 
-if __name__ == "__main__":
-    current_dir = os.getcwd()
-    data_dir = os.path.join(current_dir, 'data')
-    real_folder = ['Real_split/Train']
-    fake_folder = ['All_fake_splits/Train']
+# Example usage _______________________________________________________
+# if __name__ == "__main__":
+#     current_dir = os.getcwd()
+#     data_dir = os.path.join(current_dir, 'data')
+#     real_folder = ['Real_split/Train']
+#     fake_folder = ['All_fake_splits/Train']
 
-    dataset = DeepfakeDataset(
-        root_dir=data_dir,
-        real_folder=real_folder,
-        fake_folder=fake_folder,
-    )
+#     dataset = DeepfakeDataset(
+#         root_dir=data_dir,
+#         real_folder=real_folder,
+#         fake_folder=fake_folder,
+#     )
 
-    image, label, img_path = dataset[0]
-    print("Dataset Size: ", len(dataset))
-    print("Image Label: ", label)
-    print("Image path: ", img_path)
+#     image, label, img_path = dataset[0]
+#     print("Dataset Size: ", len(dataset))
+#     print("Image Label: ", label)
+#     print("Image path: ", img_path)

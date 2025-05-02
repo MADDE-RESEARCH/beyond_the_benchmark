@@ -1,7 +1,8 @@
 "tuning_type": "FullFT"
 "model_name": "deepfake_detection"
-"real_folder": ['Real_4k_split', 'Real_1k_split']
+"real_folder": ['Real_5_k_split']
 "fake_folder": ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split']
+"test_split": [Test]
 "num_epochs": 15
 "batch_size": 16
 "learning_rate": 0.0005
