@@ -99,7 +99,7 @@ if __name__ == "__main__":
             # change the fake and real folder iteratively
             cfg.real_folder = [real_combination[order]]
             cfg.fake_folder = [combination]
-            dataset_type += combination.replace("_split", "", 1)+"+"
+            dataset_type += combination.replace("_split", "", 1)+"_"
 
             # initialize wandb
             project_name = "Fine-Tuning Experiment"
