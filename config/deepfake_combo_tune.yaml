@@ -1,0 +1,16 @@
+"tuning_type": "ComboFT"
+"model_name": "deepfake_detection"
+"real_folder": ['Real_1k_split', 'Real_4k_split']
+"fake_folder": ['StableDiffusion_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split', 'StyleGAN2_split']
+"num_epochs": 10
+"batch_size": 16
+"learning_rate": 0.0005
+"use_wandb": True
+
+# Lora & Layer norm
+"r": 8
+"lora_alpha": 16
+"target_modules_lora": ["self_attn.q_proj", "self_attn.v_proj"]
+"target_modules_ln": ["pre_layrnorm", "layer_norm1", "layer_norm2", "post_layernorm", "layernorm"]
+"lora_dropout": 0.05
+"bias": "none"
