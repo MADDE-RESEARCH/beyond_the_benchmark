@@ -78,8 +78,9 @@ This time the real/fake folder in a yaml file will be ignored, and it will autom
 
 For successive loading with retraining, please use the following guidelines:
     1) In your config file, give a name to your experiment by changing "experiment_name".
-    2) Run the "src/create_dataset_split.py" first to create the dataset.
-    3) Make sure you are running the "experiment_generalization_retrain.py" instead of "experiment.py"
+    2) For changing the experimentation order, in the config file, define your experimentation order in "experiment_order" and the experiment will run cyclically.
+    3) Run the "src/create_dataset_split.py" first to create the dataset.
+    4) Make sure you are running the "experiment_generalization_retrain.py" instead of "experiment.py"
 
 ```bash
 tmux new -s experiment_fft

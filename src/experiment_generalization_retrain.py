@@ -64,7 +64,7 @@ if __name__ == "__main__":
     real_test = ["Real_5_k_split"]
     fake_test =  ["StyleGAN2_split", "StableDiffusion_split", "Midjourney_split", "firefly_split", "Dall-E_split"]
     real_combination = ["Real_1-5_k_split", "Real_2-5_k_split", "Real_3-5_k_split", "Real_4-5_k_split", "Real_5-5_k_split"]
-    base_combination = ["StyleGAN2_split", "Dall-E_split", "firefly_split", "Midjourney_split", "StableDiffusion_split"]
+    base_combination = cfg.experiment_order
 
     experiment_queue = deque(base_combination)
     num_cycles  = len(base_combination)
@@ -125,4 +125,4 @@ if __name__ == "__main__":
         # Rotate the queue to the left
         experiment_queue.rotate(-1)
 # Example _______________________________________________________________________________________________________________
-# python src/experiment.py --config=config/deepfake_full_tune.yaml --test_split Test
+# python src/experiment_generalization_retrain.py --config=config/lora_full_tune.yaml --test_split Test
