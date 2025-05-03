@@ -6,3 +6,5 @@
 "batch_size": 10
 "learning_rate": None
 "use_wandb": False
+"experiment_name": "experiment1"
+"test_split": [Test]

@@ -426,7 +426,7 @@ class FineTuner:
                 }
             )
 
-    def Experiment(self, dataset_type, test_split=["Test"]):
+    def Experiment(self, dataset_type, experiment_name, cycle_idx, order, test_split=["Test"]):
         # Fine-tune the model
         tuned_model = self.Tune()
 
@@ -457,7 +457,7 @@ class FineTuner:
             keys=eval_results.keys(),
             names=["Domain", "Metric"]
         )
-        combined_csv_path = f"/home/ec2-user/madde/experiments/results/_{dataset_type}_{self.model_name}_combined_report.csv"
+        combined_csv_path = f"/home/ec2-user/madde/experiments/results/_{experiment_name}_{cycle_idx}_{order}_{dataset_type}_{self.model_name}_combined_report.csv"
         combined_report.to_csv(combined_csv_path)
         print(f"Saved combined evaluation report to {combined_csv_path}")
 

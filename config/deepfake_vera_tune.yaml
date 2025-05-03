@@ -2,11 +2,12 @@
 "model_name": "deepfake_detection"
 "real_folder": ['Real_5_k_split']
 "fake_folder": ['StableDiffusion_split', 'StyleGAN2_split', 'Midjourney_split', 'firefly_split', 'Dall-E_split']
-"test_split": [Test]
 "num_epochs": 10
 "batch_size": 16
 "learning_rate": 0.0005
 "use_wandb": True
+"experiment_name": "experiment1"
+"test_split": [Test]
 
 # Vera
 "r": 8

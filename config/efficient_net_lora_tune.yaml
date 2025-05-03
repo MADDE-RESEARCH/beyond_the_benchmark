@@ -5,7 +5,9 @@
 "num_epochs": 20
 "batch_size": 16
 "learning_rate": 0.0005
-"use_wandb": False
+"use_wandb": True
+"experiment_name": "experiment1"
+"test_split": [Test]
 
 # Lora
 "r": 8

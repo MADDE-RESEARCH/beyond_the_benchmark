@@ -37,6 +37,7 @@ class LoraFT(FullFT):
             target_modules=kwargs.get("target_modules"),
             lora_dropout=kwargs.get("lora_dropout"),
             bias=kwargs.get("bias"),
+            experiment_name=kwargs.get("experiment_name"),
         )
 
     def Tune(self):
@@ -48,6 +49,6 @@ class LoraFT(FullFT):
         #self.model.print_trainable_parameters()
 
         optimizer = optim.AdamW(filter(lambda p: p.requires_grad, self.model.parameters()), lr=self.learning_rate)
-        model_save_path = f"lora_tune_{self.model_name}.pth"
+        model_save_path = f"{self.lora_config.experiment_name}_lora_tune_{self.model_name}.pth"
 
         return super().Tune(optimizer=optimizer, model_save_path=model_save_path)

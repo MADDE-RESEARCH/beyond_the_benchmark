@@ -6,6 +6,8 @@
 "batch_size": 16
 "learning_rate": 0.0005
 "use_wandb": False
+"experiment_name": "experiment1"
+"test_split": [Test]
 
 # BayesTune Parameters
 "sparsity_level": 0.00045

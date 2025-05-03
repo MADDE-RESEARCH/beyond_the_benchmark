@@ -64,8 +64,6 @@ def merge_folders(base_dir, merge_source_folder, merge_destination_folder):
             count += 1
     print(f"Total files moved: {count}")
 
-    
-
 if __name__ == "__main__":
 
     # copy real images randomly to the new split folders
@@ -89,9 +87,11 @@ if __name__ == "__main__":
 
     # Copy 1st 1k folder
     merge_source_folder = "Real_1k_split"
-    merge_destination_folder = "Real_1__k_split"
+    merge_destination_folder = "Real_1_k_split"
     merge_folders(base_dir, merge_source_folder, merge_destination_folder)
     sanity_check(base_dir, [merge_destination_folder], file_check_counts)
+    merge_folders(base_dir, merge_source_folder, "Real_1-5_k_split")
+    sanity_check(base_dir, ["Real_1-5_k_split"], file_check_counts)
 
     # Copy 4k splits
     merge_source_folder = "Real_4k_split"
@@ -99,10 +99,17 @@ if __name__ == "__main__":
     merge_folders(base_dir, merge_source_folder, merge_destination_folder)
     sanity_check(base_dir, [merge_destination_folder], full_file_check_counts)
 
+    # Create 1000 images datest for iterative retraining
+    real_combination = ["Real_1-5_k_split", "Real_2-5_k_split", "Real_3-5_k_split", "Real_4-5_k_split", "Real_5-5_k_split"]
+
+
     # Move real images to the new split folders
     move_source_folder = "Real_4k_split_copy"
     for idx, folder in enumerate(folders[1:]):
         move_images(base_dir, move_source_folder, folder, file_counts)
+        merge_folders(base_dir, folder, real_combination[idx+1])
+        sanity_check(base_dir, [real_combination[idx+1]], file_counts)
+        
         merge_folders(base_dir, folders[idx], folder)
 
         # Sanity check

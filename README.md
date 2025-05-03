@@ -76,11 +76,18 @@ For batch-experiment, plesae run 'experiment.py'.
 You need to pick a fine-tuning method by yaml file. and 
 This time the real/fake folder in a yaml file will be ignored, and it will automatically be trained and tested on full dataset and all five leave-one-out combinations of our deepfake dataset.
 
+For successive loading with retraining, please use the following guidelines:
+    1) In your config file, give a name to your experiment by changing "experiment_name".
+    2) Run the "src/create_dataset_split.py" first to create the dataset.
+    3) Make sure you are running the "experiment_generalization_retrain.py" instead of "experiment.py"
+
 ```bash
 tmux new -s experiment_fft
 source madde_env/bin/activate
 export CUBLAS_WORKSPACE_CONFIG=:4096:8 # For Vera Finetuning
-python src/experiment.py --config=config/deepfake_full_tune.yaml --test_split Test
+python src/create_dataset_split.py
+wandb login <API>
+python src/experiment_generalization_retrain.py --config=config/deepfake_full_tune.yaml --test_split Test
 ```
 ```bash
 Ctrl + b then d # For detaching the session
