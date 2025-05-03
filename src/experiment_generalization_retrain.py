@@ -97,8 +97,8 @@ if __name__ == "__main__":
             cfg.processor = preprocess
 
             # change the fake and real folder iteratively
-            cfg.real_folder = real_combination[order]
-            cfg.fake_folder = combination
+            cfg.real_folder = [real_combination[order]]
+            cfg.fake_folder = [combination]
             dataset_type += combination.replace("_split", "", 1)+"+"
 
             # initialize wandb
