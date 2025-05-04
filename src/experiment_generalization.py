@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     # Dall‑E
     {
-        "dataset_type": "Dall‑E+SG2",
+        "dataset_type": "Dall‑E_SG2",
         "real": ["Real_2_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split"],
         "real_test": ["Real_5_k_split"],
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     # Firefly
     {
-        "dataset_type": "Firefly+DE+SG2",
+        "dataset_type": "Firefly_DE_SG2",
         "real": ["Real_3_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split", "firefly_split"],
         "real_test": ["Real_5_k_split"],
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # Midjourney
     {
-        "dataset_type": "Midjourney+FF+DE+SG2",
+        "dataset_type": "Midjourney_FF_DE_SG2",
         "real": ["Real_4_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split", "firefly_split", "Midjourney_split"],
         "real_test": ["Real_5_k_split"],
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     # StableDiffusion
     {
-        "dataset_type": "StableDiffusion+MJ+FF+DE+SG2",
+        "dataset_type": "StableDiffusion_MJ_FF-DE_SG2",
         "real": ["Real_5_k_split"],
         "fake": ["StyleGAN2_split", "Dall-E_split", "firefly_split", "Midjourney_split", "StableDiffusion_split"],
         "real_test": ["Real_5_k_split"],
@@ -141,7 +141,7 @@ if __name__ == "__main__":
         project_name = "Fine-Tuning Experiment"
         mode = "online" if cfg.use_wandb else "disabled"
         group_name = cfg.tuning_type
-        run_name = f"genralization_{cfg.model_name}_{cfg.tuning_type}_{combination['dataset_type']}"
+        run_name = f"{cfg.experiment_name}_genralization_{cfg.model_name}_{cfg.tuning_type}_{combination['dataset_type']}"
         wandb.init(project=project_name, group=group_name, name=run_name, config=cfg, mode=mode)
 
         tuner_cls = TUNER_CLASSES.get(cfg.tuning_type)
@@ -152,7 +152,7 @@ if __name__ == "__main__":
         tuner.set_TestFolder(combination['real_test'], combination['fake_test'])
 
         # let's go!
-        tuned_model = tuner.Experiment(combination['dataset_type'], cfg.test_split)
+        tuned_model = tuner.Experiment(combination['dataset_type'], cfg.experiment_name, cfg.test_split)
 
 # Example _______________________________________________________________________________________________________________
 # python src/experiment.py --config=config/deepfake_full_tune.yaml --test_split Test

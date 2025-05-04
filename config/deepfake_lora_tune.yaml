@@ -7,7 +7,7 @@
 "learning_rate": 0.0005
 "use_wandb": True
 "experiment_order": ["StyleGAN2_split", "Dall-E_split", "firefly_split", "Midjourney_split", "StableDiffusion_split"]
-"experiment_name": "experiment1"
+"experiment_name": "experiment3"
 "test_split": [Test]
 
 # Lora
